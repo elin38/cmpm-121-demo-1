@@ -8,13 +8,16 @@ document.title = gameName;
 const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
+
+// intitialize
+let increment: number = 0;
+let counter: number = 0;
+
 // step 1
 const button = document.createElement("button");
 button.innerHTML = "🎼";
 app.append(button);
 // step 2
-let counter: number = 0;
-
 const displayCounter = document.createElement("div");
 displayCounter.innerHTML = `${counter} notes`;
 app.append(displayCounter);
@@ -35,10 +38,26 @@ let startTime = 0;
 function autoClick(endTime: number) {
     if (startTime !== 0) {
         const elapsedTime = (endTime - startTime) / 1000;
-        const amount = elapsedTime;
+        const amount = elapsedTime * increment;
         increaseCounter(amount);
     }
     startTime = endTime;
     requestAnimationFrame(autoClick);
 }
 requestAnimationFrame(autoClick);
+// step 5
+const upgrade = document.createElement("button");
+upgrade.innerHTML = "Purchase 🎵";
+app.append(upgrade);
+upgrade.addEventListener("click", () => {
+    increment += 1;
+    counter -= 10;
+});
+setInterval(checkUpgrade)
+function checkUpgrade() {
+    if (counter < 10) {
+        upgrade.disabled = true;
+    } else {
+        upgrade.disabled = false;
+    }
+}

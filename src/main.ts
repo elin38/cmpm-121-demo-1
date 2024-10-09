@@ -45,19 +45,3 @@ function autoClick(endTime: number) {
     requestAnimationFrame(autoClick);
 }
 requestAnimationFrame(autoClick);
-// step 5
-const upgrade = document.createElement("button");
-upgrade.innerHTML = "Purchase 🎵";
-app.append(upgrade);
-upgrade.addEventListener("click", () => {
-    increment += 1;
-    counter -= 10;
-});
-setInterval(checkUpgrade)
-function checkUpgrade() {
-    if (counter < 10) {
-        upgrade.disabled = true;
-    } else {
-        upgrade.disabled = false;
-    }
-}

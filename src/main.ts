@@ -24,9 +24,21 @@ button.addEventListener("click", () => {
     displayCounter.innerHTML = `${counter} notes`;
 });
 // step 3
-setInterval(increaseCounter, 1000, 1);
+// setInterval(increaseCounter, 1000, 1);
 
 function increaseCounter(amount: number) {
     counter += amount;
-    displayCounter.innerHTML = `${counter} notes`;
+    displayCounter.innerHTML = `${counter.toFixed(2)} notes`;
 }
+// step 4
+let startTime = 0;
+function autoClick(endTime: number) {
+    if (startTime !== 0) {
+        const elapsedTime = (endTime - startTime) / 1000;
+        const amount = elapsedTime;
+        increaseCounter(amount);
+    }
+    startTime = endTime;
+    requestAnimationFrame(autoClick);
+}
+requestAnimationFrame(autoClick);

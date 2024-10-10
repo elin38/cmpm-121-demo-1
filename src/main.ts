@@ -12,15 +12,40 @@ app.append(header);
 // intitialize
 let increment: number = 0;
 let counter: number = 0;
-let upgradePurchased: number = 0;
-let upgrade2Purchased: number = 0;
-let upgrade3Purchased: number = 0;
 
-// step 1
+interface Upgrade {
+    name: string;
+    cost: number;
+    amount: number;
+    increment: number;
+}
+
+const upgrade1: Upgrade = {
+    name: "🥁",
+    cost: 10,
+    amount: 0,
+    increment: 0.1
+}
+
+const upgrade2: Upgrade = {
+    name: "🎺",
+    cost: 100,
+    amount: 0,
+    increment: 2
+}
+
+const upgrade3: Upgrade = {
+    name: "🎻",
+    cost: 1000,
+    amount: 0,
+    increment: 50
+}
+
+// Make main button and counter
 const button = document.createElement("button");
 button.innerHTML = "🎼";
 app.append(button);
-// step 2
+
 const displayCounter = document.createElement("div");
 displayCounter.innerHTML = `${counter} notes`;
 app.append(displayCounter);
@@ -29,17 +54,34 @@ button.addEventListener("click", () => {
     counter += 1;
     displayCounter.innerHTML = `${counter} notes`;
 });
-// step 3
+
+const displayIncrement = document.createElement("div");
+displayIncrement.innerHTML = `${increment} notes/s`;
+app.append(displayIncrement);
+
+// Make upgrade buttons
+const upgradeBox = document.createElement("div");
+upgradeBox.classList.add("upgrade-box");
+
+const upgrade1button = document.createElement("button");
+upgrade1button.innerHTML = upgrade1.name;
+upgradeBox.append(upgrade1button);
+const upgrade2button = document.createElement("button");
+upgrade2button.innerHTML = upgrade2.name;
+upgradeBox.append(upgrade2button);
+const upgrade3button = document.createElement("button");
+upgrade3button.innerHTML = upgrade3.name;
+upgradeBox.append(upgrade3button);
+
+app.append(upgradeBox);
 
 function increaseCounter(amount: number) {
     counter += amount;
     displayCounter.innerHTML = `${counter.toFixed(2)} notes`;
     displayIncrement.innerHTML = `${increment.toFixed(1)} notes/s`;
-    upgrade.innerHTML = `Purchase 0.1 🎵/s (${upgradePurchased})`;
-    upgrade2.innerHTML = `Purchase 2 🎵/s (${upgrade2Purchased})`;
-    upgrade3.innerHTML = `Purchase 50 🎵/s (${upgrade3Purchased})`;
 }
-// step 4
+
+// Match frames with note count
 let startTime = 0;
 function autoClick(endTime: number) {
     if (startTime !== 0) {
@@ -51,54 +93,45 @@ function autoClick(endTime: number) {
     requestAnimationFrame(autoClick);
 }
 requestAnimationFrame(autoClick);
-// step 5
-const upgrade = document.createElement("button");
-upgrade.innerHTML = "Purchase 0.1 🎵/s";
-console.log(typeof(upgrade));
-upgrade.id = 'upgrade1';
-app.append(upgrade);
-upgrade.addEventListener("click", () => {
-    increment += 0.1;
-    counter -= 10;
-    upgradePurchased += 1;
+
+// Upgrade Button Event Handlers
+upgrade1button.addEventListener("click", () => {
+    increment += upgrade1.increment;
+    counter -= upgrade1.cost;
+    upgrade1.amount += 1;
 });
-setInterval(checkUpgrade)
-function checkUpgrade() {
+
+upgrade2button.addEventListener("click", () => {
+    increment += upgrade2.increment;
+    counter -= upgrade2.cost;
+    upgrade2.amount += 1;
+});
+
+upgrade3button.addEventListener("click", () => {
+    increment += upgrade3.increment;
+    counter -= upgrade3.cost;
+    upgrade3.amount += 1;
+});
+
+// Update
+setInterval(updateGame)
+function updateGame() {
     if (counter < 10) {
-        upgrade.disabled = true;
+        upgrade1button.disabled = true;
     } else {
-        upgrade.disabled = false;
+        upgrade1button.disabled = false;
     }
     if (counter < 100) {
-        upgrade2.disabled = true;
+        upgrade2button.disabled = true;
     } else {
-        upgrade2.disabled = false;
+        upgrade2button.disabled = false;
     }
     if (counter < 1000) {
-        upgrade3.disabled = true;
+        upgrade3button.disabled = true;
     } else {
-        upgrade3.disabled = false;
+        upgrade3button.disabled = false;
     }
+    upgrade1button.innerHTML = `${upgrade1.name} (🎵 ${upgrade1.increment}/s) (Cost: ${upgrade1.cost}) Total: ${upgrade1.amount}`
+    upgrade2button.innerHTML = `${upgrade2.name} (🎵 ${upgrade2.increment}/s) (Cost: ${upgrade2.cost}) Total: ${upgrade2.amount}`
+    upgrade3button.innerHTML = `${upgrade3.name} (🎵 ${upgrade3.increment}/s) (Cost: ${upgrade3.cost}) Total: ${upgrade3.amount}`
 }
-// step 6
-const upgrade2 = document.createElement("button");
-upgrade2.innerHTML = "Purchase 2 🎵/s";
-app.append(upgrade2);
-upgrade2.addEventListener("click", () => {
-    increment += 2.0;
-    counter -= 100;
-    upgrade2Purchased += 1;
-});
-
-const upgrade3 = document.createElement("button");
-upgrade3.innerHTML = "Purchase 50 🎵/s";
-app.append(upgrade3);
-upgrade3.addEventListener("click", () => {
-    increment += 50;
-    counter -= 1000;
-    upgrade3Purchased += 1;
-});
-
-const displayIncrement = document.createElement("div");
-displayIncrement.innerHTML = `${increment} notes/s`;
-app.append(displayIncrement);

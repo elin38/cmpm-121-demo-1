@@ -11,7 +11,7 @@ app.append(header);
 
 // intitialize
 let increment: number = 0;
-let counter: number = 0;
+let counter: number = 1000;
 
 interface Upgrade {
     name: string;
@@ -99,34 +99,37 @@ upgrade1button.addEventListener("click", () => {
     increment += upgrade1.increment;
     counter -= upgrade1.cost;
     upgrade1.amount += 1;
+    upgrade1.cost = Number((upgrade1.cost * 1.15).toFixed(2));
 });
 
 upgrade2button.addEventListener("click", () => {
     increment += upgrade2.increment;
     counter -= upgrade2.cost;
     upgrade2.amount += 1;
+    upgrade2.cost = Number((upgrade2.cost * 1.15).toFixed(2));
 });
 
 upgrade3button.addEventListener("click", () => {
     increment += upgrade3.increment;
     counter -= upgrade3.cost;
     upgrade3.amount += 1;
+    upgrade3.cost = Number((upgrade3.cost * 1.15).toFixed(2));
 });
 
 // Update
 setInterval(updateGame)
 function updateGame() {
-    if (counter < 10) {
+    if (counter < upgrade1.cost) {
         upgrade1button.disabled = true;
     } else {
         upgrade1button.disabled = false;
     }
-    if (counter < 100) {
+    if (counter < upgrade2.cost) {
         upgrade2button.disabled = true;
     } else {
         upgrade2button.disabled = false;
     }
-    if (counter < 1000) {
+    if (counter < upgrade3.cost) {
         upgrade3button.disabled = true;
     } else {
         upgrade3button.disabled = false;

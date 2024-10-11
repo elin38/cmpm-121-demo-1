@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "Ethan's Game";
+const gameName = "Epic Ensemble";
 document.title = gameName;
 
 const header = document.createElement("h1");
@@ -18,12 +18,15 @@ interface Upgrade {
     cost: number;
     amount: number;
     increment: number;
+    description: string;
 }
 
 const upgradeList: Upgrade[] = [
-    {name: "🥁", cost: 10, amount: 0, increment: 0.1},
-    {name: "🎺", cost: 100, amount: 0, increment: 2},
-    {name: "🎻", cost: 1000, amount: 0, increment: 50}
+    {name: "🥁", cost: 10, amount: 0, increment: 0.1, description: "Ba Dum Tss<br>-A slow but steady beat"},
+    {name: "🎺", cost: 100, amount: 0, increment: 2, description: "Ya like jazz?<br>-The sound of brass fills the air"},
+    {name: "🎻", cost: 1000, amount: 0, increment: 50, description: "If you can play it slowly you can play it quickly<br>-Playing an elegant supporting melody"},
+    {name: "🎹", cost: 10000, amount: 0, increment: 2500, description: "Did you know the Piano is both a stringed and a percussion instrument<br>-The melody is the heart and soul of music"}, 
+    {name: "🎙️", cost: 100000, amount: 0, increment: 33333, description: "I am singing in the Rain<br>-Powerful lyrics that make you want to sing along"} 
 ];
 
 // Make main button and counter
@@ -34,13 +37,14 @@ app.append(button);
 
 const displayCounter = document.createElement("div");
 displayCounter.innerHTML = `${counter} notes`;
+displayCounter.classList.add("display-counter");
 app.append(displayCounter);
 
 button.addEventListener("click", () => {
     counter += 1;
     displayCounter.innerHTML = `${counter} notes`;
 
-    // Written with the help of chatGPT
+    //floating emoji written with chatGPT
     const note = document.createElement("span");
     note.innerHTML = "🎵";
     note.classList.add("note-emoji");
@@ -61,16 +65,42 @@ button.addEventListener("click", () => {
 
 const displayIncrement = document.createElement("div");
 displayIncrement.innerHTML = `${increment} notes/s`;
+displayIncrement.classList.add("display-increment");
 app.append(displayIncrement);
 
 // Make upgrade buttons
 const upgradeBox = document.createElement("div");
 upgradeBox.classList.add("upgrade-box");
 
+const upgradeCountBox = document.createElement("div");
+upgradeCountBox.classList.add("upgrade-count-box");
+
 upgradeList.forEach((upgrade) => {
     const upgradeButton = document.createElement("button");
     upgradeButton.innerHTML = `${upgrade.name} (🎶 ${upgrade.increment}/s) (Cost: ${upgrade.cost})`;
     upgradeBox.append(upgradeButton);
+
+    const upgradeCount = document.createElement("div");
+    upgradeCount.innerHTML = `${upgrade.name}: ${upgrade.amount}`;
+    upgradeCountBox.append(upgradeCount);
+
+    // hoverBox written with the help of chatGPT
+    const hoverBox = document.createElement("div");
+    hoverBox.classList.add("hover-box");
+    hoverBox.innerHTML = `${upgrade.description}`;
+    hoverBox.style.display = "none";
+    app.append(hoverBox);
+
+    upgradeButton.addEventListener("mouseenter", (e) => {
+        hoverBox.style.display = "block";
+        const rect = (e.target as HTMLElement).getBoundingClientRect();
+        hoverBox.style.left = `${rect.right + 10}px`;
+        hoverBox.style.top = `${rect.top}px`;
+    });
+
+    upgradeButton.addEventListener("mouseleave", () => {
+        hoverBox.style.display = "none";
+    });
 
     upgradeButton.addEventListener("click", () => {
         if (counter >= upgrade.cost) {
@@ -85,11 +115,12 @@ upgradeList.forEach((upgrade) => {
 });
 
 app.append(upgradeBox);
+app.append(upgradeCountBox);
 
 function increaseCounter(amount: number) {
     counter += amount;
-    displayCounter.innerHTML = `${counter.toFixed(2)} notes`;
-    displayIncrement.innerHTML = `${increment.toFixed(1)} notes/s`;
+    displayCounter.innerHTML = `${counter.toFixed(2)} Notes`;
+    displayIncrement.innerHTML = `${increment.toFixed(1)} 🎵/s`;
 }
 
 // Match frames with note count
@@ -106,15 +137,18 @@ function autoClick(endTime: number) {
 requestAnimationFrame(autoClick);
 
 // Update (written with the help of chatGPT)
-setInterval(updateGame)
+setInterval(updateGame, 100);
 function updateGame() {
     upgradeList.forEach((upgrade, index) => {
         const upgradeButton = upgradeBox.children[index] as HTMLButtonElement;
+        const upgradeCount = upgradeCountBox.children[index] as HTMLDivElement;
+        
         if (counter < upgrade.cost) {
             upgradeButton.disabled = true;
         } else {
             upgradeButton.disabled = false;
         }
-        upgradeButton.innerHTML = `${upgrade.name} (🎶 ${upgrade.increment}/s) (Cost: ${upgrade.cost}) Total: ${upgrade.amount}`;
+        upgradeButton.innerHTML = `${upgrade.name} (🎶 ${upgrade.increment}/s) ${upgrade.cost}🎵`;
+        upgradeCount.innerHTML = `${upgrade.name}: ${upgrade.amount}`;
     });
 }

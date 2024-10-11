@@ -87,3 +87,81 @@ button:focus-visible {
   border: 1px solid #ccc;
   border-radius: 8px;
 }
+
+/* note-button was written with the help of chatGPT */
+.note-button {
+  width: 150px;
+  height: 150px;
+  font-size: 30px;
+  padding: 15px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f9c74f, #f9844a, #90be6d);
+  border: 5px solid transparent;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2), 0px 0px 15px rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.note-button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #f9844a, #f9c74f, #43aa8b);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3), 0px 0px 25px rgba(255, 255, 255, 0.4);
+}
+
+.note-button:active {
+  transform: scale(0.95);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.note-button::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  animation: glow 1.5s infinite;
+}
+
+@keyframes glow {
+  0% {
+      opacity: 0;
+      transform: scale(1);
+  }
+  50% {
+      opacity: 1;
+      transform: scale(1.05);
+  }
+  100% {
+      opacity: 0;
+      transform: scale(1);
+  }
+}
+
+/* note-emoji was written by chatGPT */
+.note-emoji {
+  position: absolute;
+  font-size: 24px;
+  transition: transform 1s ease-out, opacity 1s ease-out;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.note-emoji {
+  animation: fadeOut 1s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+  }
+}

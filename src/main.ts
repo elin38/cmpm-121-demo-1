@@ -11,7 +11,7 @@ app.append(header);
 
 // intitialize
 let increment: number = 0;
-let counter: number = 1000;
+let counter: number = 0;
 
 interface Upgrade {
     name: string;
@@ -44,6 +44,7 @@ const upgrade3: Upgrade = {
 // Make main button and counter
 const button = document.createElement("button");
 button.innerHTML = "🎼";
+button.classList.add("note-button");
 app.append(button);
 
 const displayCounter = document.createElement("div");
@@ -53,6 +54,24 @@ app.append(displayCounter);
 button.addEventListener("click", () => {
     counter += 1;
     displayCounter.innerHTML = `${counter} notes`;
+
+    // Written with the help of chatGPT
+    const note = document.createElement("span");
+    note.innerHTML = "🎵";
+    note.classList.add("note-emoji");
+    app.append(note);
+
+    const buttonRect = button.getBoundingClientRect();
+    note.style.left = `${buttonRect.left + buttonRect.width / 2}px`;
+    note.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
+
+    const randomX = (Math.random() - 0.5) * 200;
+    const randomY = (Math.random() - 0.5) * 200;
+
+    note.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    setTimeout(() => {
+        note.remove();
+    }, 1000);
 });
 
 const displayIncrement = document.createElement("div");
@@ -134,7 +153,7 @@ function updateGame() {
     } else {
         upgrade3button.disabled = false;
     }
-    upgrade1button.innerHTML = `${upgrade1.name} (🎵 ${upgrade1.increment}/s) (Cost: ${upgrade1.cost}) Total: ${upgrade1.amount}`
-    upgrade2button.innerHTML = `${upgrade2.name} (🎵 ${upgrade2.increment}/s) (Cost: ${upgrade2.cost}) Total: ${upgrade2.amount}`
-    upgrade3button.innerHTML = `${upgrade3.name} (🎵 ${upgrade3.increment}/s) (Cost: ${upgrade3.cost}) Total: ${upgrade3.amount}`
+    upgrade1button.innerHTML = `${upgrade1.name} (🎶 ${upgrade1.increment}/s) (Cost: ${upgrade1.cost}) Total: ${upgrade1.amount}`
+    upgrade2button.innerHTML = `${upgrade2.name} (🎶 ${upgrade2.increment}/s) (Cost: ${upgrade2.cost}) Total: ${upgrade2.amount}`
+    upgrade3button.innerHTML = `${upgrade3.name} (🎶 ${upgrade3.increment}/s) (Cost: ${upgrade3.cost}) Total: ${upgrade3.amount}`
 }

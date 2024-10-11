@@ -20,26 +20,11 @@ interface Upgrade {
     increment: number;
 }
 
-const upgrade1: Upgrade = {
-    name: "🥁",
-    cost: 10,
-    amount: 0,
-    increment: 0.1
-}
-
-const upgrade2: Upgrade = {
-    name: "🎺",
-    cost: 100,
-    amount: 0,
-    increment: 2
-}
-
-const upgrade3: Upgrade = {
-    name: "🎻",
-    cost: 1000,
-    amount: 0,
-    increment: 50
-}
+const upgradeList: Upgrade[] = [
+    {name: "🥁", cost: 10, amount: 0, increment: 0.1},
+    {name: "🎺", cost: 100, amount: 0, increment: 2},
+    {name: "🎻", cost: 1000, amount: 0, increment: 50}
+];
 
 // Make main button and counter
 const button = document.createElement("button");
@@ -82,15 +67,22 @@ app.append(displayIncrement);
 const upgradeBox = document.createElement("div");
 upgradeBox.classList.add("upgrade-box");
 
-const upgrade1button = document.createElement("button");
-upgrade1button.innerHTML = upgrade1.name;
-upgradeBox.append(upgrade1button);
-const upgrade2button = document.createElement("button");
-upgrade2button.innerHTML = upgrade2.name;
-upgradeBox.append(upgrade2button);
-const upgrade3button = document.createElement("button");
-upgrade3button.innerHTML = upgrade3.name;
-upgradeBox.append(upgrade3button);
+upgradeList.forEach((upgrade) => {
+    const upgradeButton = document.createElement("button");
+    upgradeButton.innerHTML = `${upgrade.name} (🎶 ${upgrade.increment}/s) (Cost: ${upgrade.cost})`;
+    upgradeBox.append(upgradeButton);
+
+    upgradeButton.addEventListener("click", () => {
+        if (counter >= upgrade.cost) {
+            increment += upgrade.increment;
+            counter -= upgrade.cost;
+            upgrade.amount += 1;
+            upgrade.cost = Number((upgrade.cost * 1.15).toFixed(2));
+
+            updateGame();
+        }
+    });
+});
 
 app.append(upgradeBox);
 
@@ -113,47 +105,16 @@ function autoClick(endTime: number) {
 }
 requestAnimationFrame(autoClick);
 
-// Upgrade Button Event Handlers
-upgrade1button.addEventListener("click", () => {
-    increment += upgrade1.increment;
-    counter -= upgrade1.cost;
-    upgrade1.amount += 1;
-    upgrade1.cost = Number((upgrade1.cost * 1.15).toFixed(2));
-});
-
-upgrade2button.addEventListener("click", () => {
-    increment += upgrade2.increment;
-    counter -= upgrade2.cost;
-    upgrade2.amount += 1;
-    upgrade2.cost = Number((upgrade2.cost * 1.15).toFixed(2));
-});
-
-upgrade3button.addEventListener("click", () => {
-    increment += upgrade3.increment;
-    counter -= upgrade3.cost;
-    upgrade3.amount += 1;
-    upgrade3.cost = Number((upgrade3.cost * 1.15).toFixed(2));
-});
-
-// Update
+// Update (written with the help of chatGPT)
 setInterval(updateGame)
 function updateGame() {
-    if (counter < upgrade1.cost) {
-        upgrade1button.disabled = true;
-    } else {
-        upgrade1button.disabled = false;
-    }
-    if (counter < upgrade2.cost) {
-        upgrade2button.disabled = true;
-    } else {
-        upgrade2button.disabled = false;
-    }
-    if (counter < upgrade3.cost) {
-        upgrade3button.disabled = true;
-    } else {
-        upgrade3button.disabled = false;
-    }
-    upgrade1button.innerHTML = `${upgrade1.name} (🎶 ${upgrade1.increment}/s) (Cost: ${upgrade1.cost}) Total: ${upgrade1.amount}`
-    upgrade2button.innerHTML = `${upgrade2.name} (🎶 ${upgrade2.increment}/s) (Cost: ${upgrade2.cost}) Total: ${upgrade2.amount}`
-    upgrade3button.innerHTML = `${upgrade3.name} (🎶 ${upgrade3.increment}/s) (Cost: ${upgrade3.cost}) Total: ${upgrade3.amount}`
+    upgradeList.forEach((upgrade, index) => {
+        const upgradeButton = upgradeBox.children[index] as HTMLButtonElement;
+        if (counter < upgrade.cost) {
+            upgradeButton.disabled = true;
+        } else {
+            upgradeButton.disabled = false;
+        }
+        upgradeButton.innerHTML = `${upgrade.name} (🎶 ${upgrade.increment}/s) (Cost: ${upgrade.cost}) Total: ${upgrade.amount}`;
+    });
 }

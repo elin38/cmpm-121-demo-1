@@ -12,6 +12,10 @@ app.append(header);
 // intitialize
 let increment: number = 0;
 let counter: number = 0;
+const EMOJI_PARTICLE_RANGE = 200;
+const UPGRADE_COST_MULTIPLIER = 1.15;
+const EMOJI_REMOVE_DELAY = 1000;
+const UPDATE_INTERVAL = 100;
 
 interface Upgrade {
     name: string;
@@ -54,13 +58,13 @@ button.addEventListener("click", () => {
     note.style.left = `${buttonRect.left + buttonRect.width / 2}px`;
     note.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
 
-    const randomX = (Math.random() - 0.5) * 200;
-    const randomY = (Math.random() - 0.5) * 200;
+    const randomX = (Math.random() - 0.5) * EMOJI_PARTICLE_RANGE;
+    const randomY = (Math.random() - 0.5) * EMOJI_PARTICLE_RANGE;
 
     note.style.transform = `translate(${randomX}px, ${randomY}px)`;
     setTimeout(() => {
         note.remove();
-    }, 1000);
+    }, EMOJI_REMOVE_DELAY);
 });
 
 const displayIncrement = document.createElement("div");
@@ -107,7 +111,7 @@ upgradeList.forEach((upgrade) => {
             increment += upgrade.increment;
             counter -= upgrade.cost;
             upgrade.amount += 1;
-            upgrade.cost = Number((upgrade.cost * 1.15).toFixed(2));
+            upgrade.cost = Number((upgrade.cost * UPGRADE_COST_MULTIPLIER).toFixed(2));
 
             updateGame();
         }
@@ -137,7 +141,7 @@ function autoClick(endTime: number) {
 requestAnimationFrame(autoClick);
 
 // Update (written with the help of chatGPT)
-setInterval(updateGame, 100);
+setInterval(updateGame, UPDATE_INTERVAL);
 function updateGame() {
     upgradeList.forEach((upgrade, index) => {
         const upgradeButton = upgradeBox.children[index] as HTMLButtonElement;

@@ -95,16 +95,9 @@ upgradeList.forEach((upgrade) => {
     hoverBox.style.display = "none";
     app.append(hoverBox);
 
-    upgradeButton.addEventListener("mouseenter", (e) => {
-        hoverBox.style.display = "block";
-        const rect = (e.target as HTMLElement).getBoundingClientRect();
-        hoverBox.style.left = `${rect.right + 10}px`;
-        hoverBox.style.top = `${rect.top}px`;
-    });
+    upgradeButton.addEventListener("mouseenter", (e) => showHoverBox(hoverBox, e));
 
-    upgradeButton.addEventListener("mouseleave", () => {
-        hoverBox.style.display = "none";
-    });
+    upgradeButton.addEventListener("mouseleave", () => hideHoverBox(hoverBox));
 
     upgradeButton.addEventListener("click", () => {
         if (counter >= upgrade.cost) {
@@ -146,13 +139,23 @@ function updateGame() {
     upgradeList.forEach((upgrade, index) => {
         const upgradeButton = upgradeBox.children[index] as HTMLButtonElement;
         const upgradeCount = upgradeCountBox.children[index] as HTMLDivElement;
-        
-        if (counter < upgrade.cost) {
-            upgradeButton.disabled = true;
-        } else {
-            upgradeButton.disabled = false;
-        }
-        upgradeButton.innerHTML = `${upgrade.name} (🎶 ${upgrade.increment}/s) ${upgrade.cost}🎵`;
-        upgradeCount.innerHTML = `${upgrade.name}: ${upgrade.amount}`;
+        updateUpgradeDisplay(upgrade, upgradeButton, upgradeCount);
     });
+}
+
+function showHoverBox(hoverBox: HTMLDivElement, event: MouseEvent) {
+    hoverBox.style.display = "block";
+    const rect = (event.target as HTMLElement).getBoundingClientRect();
+    hoverBox.style.left = `${rect.right + 10}px`;
+    hoverBox.style.top = `${rect.top}px`;
+}
+
+function hideHoverBox(hoverBox: HTMLDivElement) {
+    hoverBox.style.display = "none";
+}
+
+function updateUpgradeDisplay(upgrade: Upgrade, button: HTMLButtonElement, countDiv: HTMLDivElement) {
+    button.disabled = counter < upgrade.cost;
+    button.innerHTML = `${upgrade.name} (🎶 ${upgrade.increment}/s) ${upgrade.cost}🎵`;
+    countDiv.innerHTML = `${upgrade.name}: ${upgrade.amount}`;
 }

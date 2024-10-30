@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #301E29; /* Dark background for dark mode */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,11 +16,13 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #FBE7C6; /* Updated link color */
   text-decoration: inherit;
+  text-shadow: 0 0 2px black; /* Thicker outline effect */
 }
 a:hover {
-  color: #535bf2;
+  color: #B4F8C8; /* Updated hover color */
+  text-shadow: 0 0 2px black; /* Keep thicker outline effect on hover */
 }
 
 body {
@@ -29,11 +31,16 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-image: url('background.png'); /* Added background image */
+  background-size: cover; /* Optional: makes the background cover the entire body */
+  background-position: center; /* Optional: centers the background image */
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: #FBE7C6; /* Updated main text color */
+  text-shadow: 0 0 2px black; /* Thicker outline effect */
 }
 
 #app {
@@ -50,12 +57,14 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+  color: #FBE7C6; /* Updated button text color */
   cursor: pointer;
   transition: border-color 0.25s;
+  text-shadow: 0 0 2px black; /* Thicker outline effect */
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #B4F8C8; /* Updated hover border color */
 }
 button:focus, button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -63,23 +72,25 @@ button:focus, button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #A0E7E5; /* Light mode text color */
+    background-color: #FBE7C6; /* Light background for light mode */
   }
   a:hover {
-    color: #747bff;
+    color: #A0E7E5; /* Updated light mode hover color */
   }
   button {
-    background-color: #f9f9f9;
+    background-color: rgba(255, 255, 255, 0.2); /* Light button background with opacity */
   }
 }
 
 .display-counter {
   font-size: 3em;
+  text-shadow: 0 0 2px black; /* Thicker outline effect */
 }
 
 .display-increment {
   font-size: 2em;
+  text-shadow: 0 0 2px black; /* Thicker outline effect */
 }
 
 .upgrade-box {
@@ -89,9 +100,9 @@ button:focus, button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly opaque upgrade box background */
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #A0E7E5; /* Border color for upgrade box */
   border-radius: 8px;
 }
 
@@ -102,9 +113,9 @@ button:focus, button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f0f0f0;
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly opaque count box background */
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #A0E7E5; /* Border color for count box */
   border-radius: 8px;
   font-size: 1.75em;
 }
@@ -116,7 +127,7 @@ button:focus, button:focus-visible {
   font-size: 30px;
   padding: 15px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f9c74f, #f9844a, #90be6d);
+  background: linear-gradient(135deg, #FBE7C6, #B4F8C8, #A0E7E5);
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2), 0px 0px 15px rgba(255, 255, 255, 0.2);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
@@ -173,7 +184,7 @@ button:focus, button:focus-visible {
 
 .hover-box {
   position: absolute;
-  background-color: #333;
+  background-color: rgba(51, 51, 51, 0.9); /* Slightly transparent background */
   color: #fff;
   padding: 10px;
   border-radius: 5px;
@@ -184,4 +195,3 @@ button:focus, button:focus-visible {
   white-space: nowrap;
   transition: opacity 0.2s ease;
 }
-

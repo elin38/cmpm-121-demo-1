@@ -5,6 +5,9 @@ const EMOJI_PARTICLE_RANGE = 200;
 const UPGRADE_COST_MULTIPLIER = 1.15;
 const EMOJI_REMOVE_DELAY = 1000;
 const UPDATE_INTERVAL = 100;
+const NOTE_GENERATION_INTERVAL_MIN = 1500; 
+const NOTE_GENERATION_INTERVAL_MAX = 3000;
+const WAVE_COUNT = 5;
 
 // Interfaces
 interface Upgrade {
@@ -69,10 +72,56 @@ function autoClick(endTime: number) {
     requestAnimationFrame(autoClick);
 }
 
+// Create and animate notes that meander across the screen
+function createFloatingNotes(waveCount: number) {
+    for (let i = 0; i < waveCount; i++) {
+        const note = document.createElement("span");
+        note.classList.add("note-emoji-2");
+        note.innerHTML = "🎵";
+
+        const randomX = Math.random() * window.innerWidth;
+        note.style.left = `${randomX}px`;
+        note.style.position = "absolute";
+
+        app.append(note);
+
+        const duration = 10000; // Duration for the note's animation
+        const startTime = performance.now();
+
+        function animateNote() {
+            const currentTime = performance.now() - startTime;
+            const progress = currentTime / duration;
+
+            const waveHeight = 150;
+            const yOffset = Math.sin(progress * Math.PI * 2) * waveHeight;
+
+            const newXPosition = randomX + (progress * window.innerWidth);
+            note.style.transform = `translateY(${yOffset}px)`;
+            note.style.left = `${newXPosition}px`; 
+
+            if (newXPosition > window.innerWidth - 30) {
+                note.remove();
+            } else {
+                requestAnimationFrame(animateNote);
+            }
+        }
+
+        animateNote();
+    }
+
+    const nextNoteInterval = Math.random() * (NOTE_GENERATION_INTERVAL_MAX - NOTE_GENERATION_INTERVAL_MIN) + NOTE_GENERATION_INTERVAL_MIN;
+    setTimeout(() => createFloatingNotes(waveCount), nextNoteInterval);
+}
+
 // Main Setup
 const app: HTMLDivElement = document.querySelector("#app")!;
 const gameName = "Epic Ensemble";
 document.title = gameName;
+
+// Create a background element
+const background = document.createElement("div");
+background.classList.add("background");
+app.append(background);
 
 const header = document.createElement("h1");
 header.innerHTML = gameName;
@@ -165,3 +214,6 @@ app.append(upgradeCountBox);
 // Start auto-click and game update interval
 requestAnimationFrame(autoClick);
 setInterval(updateGame, UPDATE_INTERVAL);
+
+// Start creating floating notes
+createFloatingNotes(WAVE_COUNT);
